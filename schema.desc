@@ -1,0 +1,38 @@
+USERS:
+	_id
+	username
+	password
+	bitsid
+	isprivate
+	make_time
+DEVICES:
+	_id
+	devicename
+	userid
+	type
+	make_time
+IPLIST:
+	_id
+	deviceid
+	ipaddress
+	make_time
+	expiry
+USERAPPS:
+	_id
+	userid
+	appid
+	make_time
+	isactive
+APPS:
+	_id
+	appname
+	userid
+	description
+	make_time
+APIKEYS:
+	_id
+	key
+	appname
+	validity
+	make_time
+

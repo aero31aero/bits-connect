@@ -8,7 +8,6 @@ http.createServer(function (request, response) {
 
     // Send the response body as "Hello World"
     response.end('Hello World\n');
-    var _ = require('underscore'); // for some utility goodness
     var deploySh = spawn('deploy-test');
     var ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
     console.log(ip);   
