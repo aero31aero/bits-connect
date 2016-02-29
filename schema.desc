@@ -4,19 +4,22 @@ USERS:
 	password
 	bitsid
 	isprivate
+	isverified
 	make_time
 DEVICES:
 	_id
 	devicename
+	macaddress
 	userid
 	type
+	isprivate
 	make_time
 IPLIST:
 	_id
 	deviceid
 	ipaddress
 	make_time
-	expiry
+	isactive
 USERAPPS:
 	_id
 	userid
@@ -28,11 +31,12 @@ APPS:
 	appname
 	userid
 	description
+	isactive
 	make_time
 APIKEYS:
 	_id
 	key
 	appname
-	validity
+	isactive
 	make_time
-
+	permission

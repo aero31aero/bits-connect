@@ -5,6 +5,7 @@ var usersSchema = new mongoose.Schema({
     bitsid: String,
     password: String,
     isprivate: Boolean,
+    isverified: Boolean,
     note: String,
     updated_at: { type: Date, default: Date.now },
 });

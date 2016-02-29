@@ -1,0 +1,60 @@
+GET /users/:id
+	return username,bitsid,isprivate where _id=:id or return null
+POST /users
+	create new user with username,bitsid,password
+	send confirmation email to bitsid@hyderabad.bits-pilani.ac.in
+	set isprivate = 0 by default
+	return _id or return null
+DELETE /users/:id
+	delete user with _id=:id
+	return _id or return null
+UPDATE /users/:id
+	set new details for user where _id=:id
+	return _id or return null
+POST /users/:id/devices
+	create new device with userid,deviceid,name,type where users._id=:id
+	return _id or return null
+GET /users/:id/devices
+	return all devices where users._id=:id and device.isprivate=false or return null
+GET /devices/:id
+	return device with _id=:id or return null
+DELETE /devices/:id
+	delete device with _id=:id
+	return _id or return null
+UPDATE /devices/:id/ipaddress/:ip
+	add record for device with _id=:id with ipaddress=:ip
+	return _id or return null
+DELETE /devices/:id/ipaddress
+	set all IP entries for device with _id=:id as isactive=false
+	return _id or return null
+GET /devices/:id/ipaddress
+	return current active IP address of device with _id=:id or return null
+POST /users/:id/apps/:appid
+	mark user as a user of app where users._id=:id and apps.appid=:appid
+	return users._id or null
+GET /users/:id/apps
+	return all apps that user with _id=:id uses or return null
+DELETE /users/:id/apps/:appid
+	set isactive=0 where users._id=:id and apps.appid=:appid
+	return _id or return null
+POST /apps
+	create new app with data provided
+	return apps._id or return null
+GET /apps/:aid
+	return apps._id where apps._id=:id or return null
+GET /apps/owner/:id
+	return array of apps where apps.userid=:id or return null
+DELETE /apps/:id
+	set isactive=0 where apps._id=:id
+	return apps._id return null
+UPDATE /apps/:id
+	update provided details where apps._id=:id
+	return apps._id return null
+POST /apps/:id/keys/:permission
+	create new API key for application with apps._id=:id with permission=:permission
+	return apikeys._id or return null
+GET /apps/:id/keys
+	return all API keys for application with apps._id=:id or return null
+DELETE /keys/:keyid
+	set isactive=0 where apikey._id=:keyid
+	return _id or return null
