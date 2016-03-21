@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var usersSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
     nodename: String,
     deviceid: String,
     ipaddress: string,
@@ -9,4 +9,4 @@ var usersSchema = new mongoose.Schema({
     
 });
 
-module.exports = mongoose.model('supernodes', usersSchema);
+module.exports = mongoose.model('Supernodes', schema);

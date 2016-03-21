@@ -4,6 +4,21 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var devicesSchema = require('../models/devicesSchema.js');
 
+function isValidMac(mac) {
+  var a = mac.split(':');
+  if (a.length !== 6) {
+    return false;
+  }
+  for (var i=0; i<6; i++) {
+    var s = "0x"+a[i];
+    if (s>>0 === 0 || s.length != 4) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
 /* GET /devices */
 router.get('/', function (req, res) {
     devicesSchema.find(function (err, devices) {
@@ -12,14 +27,28 @@ router.get('/', function (req, res) {
     });
 });
 
+/* GET /devices/users/:userid */
+router.get('/users/:userid', function (req, res) {
+    devicesSchema.find({"userid": req.params.userid},function (err, devices) {
+        if (err) return next(err);
+        res.json(devices);
+    });
+});
+
 /* POST /devices */
 router.post('/', function (req, res, next) {
     console.log(req.body)
-    
-    devicesSchema.create(req.body, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
-    });
+    var re = /^([0-9A-F]a-f{2}[:]){5}([0-9A-Fa-f]{2})$/;
+    //var re = /^[0-9]{2}[:][0-9]{2}[:][0-9]{2}[:][0-9]{2}[:][0-9]{2}[:][0-9]{2}/g;
+    if (isValidMac(req.body.macaddress)) {
+        devicesSchema.create(req.body, function (err, post) {
+            if (err) return next(err);
+            res.json(post);
+        });
+    }
+    else{
+        res.send("{status:fail}");
+    }
 });
 
 /* GET /devices/id */

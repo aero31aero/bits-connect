@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var usersSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
     username: String,
     bitsid: String,
     password: String,
@@ -10,4 +10,4 @@ var usersSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Users', usersSchema);
+module.exports = mongoose.model('Users', schema);

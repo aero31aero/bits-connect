@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var usersSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
     devicename: String,
     macaddress: String,
     userid: String,
@@ -9,4 +9,4 @@ var usersSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('devices', usersSchema);
+module.exports = mongoose.model('Devices', schema);

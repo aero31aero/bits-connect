@@ -40,10 +40,3 @@ APIKEYS:
 	isactive
 	make_time
 	permission
-SUPERNODES:
-	_id
-	nodename
-	deviceid
-	ipaddress
-	update_time
-	isactive

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var usersSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
     appname: String,
     userid: String,
     description: String,
@@ -8,4 +8,4 @@ var usersSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('apps', usersSchema);
+module.exports = mongoose.model('Apps', schema);

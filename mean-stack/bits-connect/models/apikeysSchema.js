@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var usersSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
     key: String,
     appname: String,
     isactive: Boolean,
@@ -8,4 +8,4 @@ var usersSchema = new mongoose.Schema({
     permission: String;
 });
 
-module.exports = mongoose.model('apikeys', usersSchema);
+module.exports = mongoose.model('Apikeys', schema);

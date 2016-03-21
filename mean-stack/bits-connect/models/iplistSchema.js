@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var usersSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
     deviceid: String,
     ipaddress: String,
     userid: String,
@@ -8,4 +8,4 @@ var usersSchema = new mongoose.Schema({
     updated_at: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('iplist', usersSchema);
+module.exports = mongoose.model('Iplist', schema);

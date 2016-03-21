@@ -1,26 +1,32 @@
-GET /users/:id
+#GET /users
+	return username,bitsid,isprivate return null
+#GET /users/:id
 	return username,bitsid,isprivate where _id=:id or return null
-POST /users
+#POST /users
 	create new user with username,bitsid,password
 	send confirmation email to bitsid@hyderabad.bits-pilani.ac.in
 	set isprivate = 0 by default
 	return _id or return null
-DELETE /users/:id
+#DELETE /users/:id
 	delete user with _id=:id
 	return _id or return null
-UPDATE /users/:id
+#?UPDATE /users/:id
 	set new details for user where _id=:id
 	return _id or return null
-POST /users/:id/devices
+#POST /devices
 	create new device with userid,deviceid,name,type where users._id=:id
 	return _id or return null
-GET /users/:id/devices
+#GET devices
+	return all devices or return null
+#GET devices/user/:userid
 	return all devices where users._id=:id and device.isprivate=false or return null
-GET /devices/:id
+#GET /devices/:id
 	return device with _id=:id or return null
-DELETE /devices/:id
+#DELETE /devices/:id
 	delete device with _id=:id
 	return _id or return null
+#UPDATE /devices/:id
+    update device with _id=:id or return null
 UPDATE /devices/:id/ipaddress/:ip
 	add record for device with _id=:id with ipaddress=:ip
 	return _id or return null
