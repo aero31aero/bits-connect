@@ -37,6 +37,8 @@ GET /users/:id/apps
 DELETE /users/:id/apps/:appid
 	set isactive=0 where users._id=:id and apps.appid=:appid
 	return _id or return null
+GET /apps/:id/users
+	return all users of app with _id=:id or return null
 POST /apps
 	create new app with data provided
 	return apps._id or return null
