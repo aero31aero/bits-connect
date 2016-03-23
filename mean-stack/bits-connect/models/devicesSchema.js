@@ -6,6 +6,9 @@ var schema = new mongoose.Schema({
     userid: String,
     type: String,
     isprivate: Boolean,
+    ipactive: Boolean,
+    ipaddress: String,
+    iptime: Date,
     updated_at: { type: Date, default: Date.now },
 });
 

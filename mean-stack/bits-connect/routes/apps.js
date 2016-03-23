@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+var auth1 = require('../middle/auth1');
+var auth2 = require('../middle/auth2');
+
 var mongoose = require('mongoose');
 var appsSchema = require('../models/appsSchema.js');
 
 /* GET /apps */
-router.get('/', function (req, res) {
+router.get('/', auth2, function (req, res) {
     appsSchema.find(function (err, apps) {
         if (err) return next(err);
         res.json(apps);
@@ -13,18 +16,8 @@ router.get('/', function (req, res) {
 });
 
 /* POST /apps */
-router.post('/', function (req, res, next) {
+router.post('/', auth2, function (req, res, next) {
     console.log(req.body)
-    if (!req.headers.authorization) {
-        res.json({
-            error: 'No credentials sent!'
-        })
-    } else {
-        var encoded = req.headers.authorization.split(' ')[1];
-        var decoded = new Buffer(encoded, 'base64').toString('utf8');
-        console.log(encoded);
-        console.log(decoded);
-    }
     appsSchema.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -32,7 +25,7 @@ router.post('/', function (req, res, next) {
 });
 
 /* GET /apps/id */
-router.get('/:id', function (req, res, next) {
+router.get('/:id', auth2, function (req, res, next) {
     appsSchema.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -40,7 +33,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 /* PUT /apps/:id */
-router.put('/:id', function (req, res, next) {
+router.put('/:id', auth2, function (req, res, next) {
     appsSchema.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -48,31 +41,13 @@ router.put('/:id', function (req, res, next) {
 });
 
 /* DELETE /apps/:id */
-router.delete('/:id', function (req, res, next) {
-    appsSchema.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+router.delete('/:id', auth2, function (req, res, next) {
+    appsSchema.findByIdAndUpdate(req.params.id, {"isactive":false}, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
-/* GET /apps/username/:username/password/:password */
-router.get('/:id', function (req, res, next) {
-    appsSchema.find({
-        "username": req.params.username
-    }, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
-    });
 
-    var cursor = appsSchema.find({
-        "username": req.params.username,
-        "password": req.params.password
-    });
-    cursor.each(function (err, post) {
-        if (doc != null) {
-            res.json(post)
-        }
-    });
-});
 
 
 module.exports = router;

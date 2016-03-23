@@ -10,7 +10,7 @@
 #DELETE /users/:id
 	delete user with _id=:id
 	return _id or return null
-#?UPDATE /users/:id
+#UPDATE /users/:id
 	set new details for user where _id=:id
 	return _id or return null
 #POST /devices
@@ -27,14 +27,26 @@
 	return _id or return null
 #UPDATE /devices/:id
     update device with _id=:id or return null
-UPDATE /devices/:id/ipaddress/:ip
+#UPDATE /devices/:id/ipaddress/:ip
 	add record for device with _id=:id with ipaddress=:ip
 	return _id or return null
-DELETE /devices/:id/ipaddress
+#DELETE /devices/:id/ip
 	set all IP entries for device with _id=:id as isactive=false
 	return _id or return null
-GET /devices/:id/ipaddress
-	return current active IP address of device with _id=:id or return null
+#POST /apps
+	create new app with data provided
+	return apps._id or return null
+#GET /apps
+	return apps._id where apps._id=:id or return null
+#GET /apps/:aid
+	return apps._id where apps._id=:id or return null
+#DELETE /apps/:id
+	set isactive=0 where apps._id=:id
+	return apps._id return null
+#UPDATE /apps/:id
+	update provided details where apps._id=:id
+	return apps._id return null
+    
 POST /users/:id/apps/:appid
 	mark user as a user of app where users._id=:id and apps.appid=:appid
 	return users._id or null
@@ -45,19 +57,6 @@ DELETE /users/:id/apps/:appid
 	return _id or return null
 GET /apps/:id/users
 	return all users of app with _id=:id or return null
-POST /apps
-	create new app with data provided
-	return apps._id or return null
-GET /apps/:aid
-	return apps._id where apps._id=:id or return null
-GET /apps/owner/:id
-	return array of apps where apps.userid=:id or return null
-DELETE /apps/:id
-	set isactive=0 where apps._id=:id
-	return apps._id return null
-UPDATE /apps/:id
-	update provided details where apps._id=:id
-	return apps._id return null
 POST /apps/:id/keys/:permission
 	create new API key for application with apps._id=:id with permission=:permission
 	return apikeys._id or return null

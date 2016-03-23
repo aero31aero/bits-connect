@@ -1,11 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
+var auth1 = require('../middle/auth1');
+var auth2 = require('../middle/auth2');
+
 var mongoose = require('mongoose');
 var usersSchema = require('../models/usersSchema.js');
 
 /* GET /users */
-router.get('/', function (req, res) {
+router.get('/', auth1, function (req, res) {
+    
+    
     usersSchema.find(function (err, users) {
         if (err) return next(err);
         res.json(users);
@@ -13,18 +18,9 @@ router.get('/', function (req, res) {
 });
 
 /* POST /users */
-router.post('/', function (req, res, next) {
+router.post('/', auth2, function (req, res, next) {
     console.log(req.body)
-    if (!req.headers.authorization) {
-        res.json({
-            error: 'No credentials sent!'
-        })
-    } else {
-        var encoded = req.headers.authorization.split(' ')[1];
-        var decoded = new Buffer(encoded, 'base64').toString('utf8');
-        console.log(encoded);
-        console.log(decoded);
-    }
+    
     usersSchema.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -32,7 +28,7 @@ router.post('/', function (req, res, next) {
 });
 
 /* GET /users/id */
-router.get('/:id', function (req, res, next) {
+router.get('/:id', auth1, function (req, res, next) {
     usersSchema.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -40,7 +36,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 /* PUT /users/:id */
-router.put('/:id', function (req, res, next) {
+router.put('/:id', auth2, function (req, res, next) {
     usersSchema.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
@@ -48,30 +44,30 @@ router.put('/:id', function (req, res, next) {
 });
 
 /* DELETE /users/:id */
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', auth2, function (req, res, next) {
     usersSchema.findByIdAndRemove(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
-/* GET /users/username/:username/password/:password */
-router.get('/:id', function (req, res, next) {
-    usersSchema.find({
-        "username": req.params.username
-    }, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
-    });
 
-    var cursor = usersSchema.find({
-        "username": req.params.username,
-        "password": req.params.password
-    });
-    cursor.each(function (err, post) {
-        if (doc != null) {
-            res.json(post)
+/* POST /users/search/authenticate/ */
+router.post('/search/authenticate', auth1, function (req, res, next) {
+    usersSchema.count(req.body, function (err, usercount) {
+        if (err) res.send("fail");
+        console.log(usercount);
+        if (usercount !=1) {
+            res.json({
+                    error: 'Invalid Authentication!'
+                })
+        }
+        if(usercount==1){
+            usersSchema.find(req.body, {"password":false}, function (err, user) {
+                res.json(user);
+            });
         }
     });
+
 });
 
 
