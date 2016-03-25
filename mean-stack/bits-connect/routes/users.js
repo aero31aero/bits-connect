@@ -29,6 +29,19 @@ router.post('/', auth2, function (req, res, next) {
     usersSchema.create(userobj, function (err, post) {
         if (err) return next(err);
         res.json(post);
+        var api_key = 'key-0518a24980eb8e0cdcd18549cf57620a';
+        var domain = 'sandboxaa5129032958444486c928220840d7eb.mailgun.org';
+        var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+        var data = {
+        from: 'Nischay Pro <f2015606@hyderabad.bits-pilani.ac.in>',
+        to:  userobj.bitsid + '@hyderabad.bits-pilani.ac.in',
+        subject: 'Please activate your Bits Connect Account',
+        html: 'Thank you for using our services. To finish setting up your account you need to activate your account and confirm your email.<br/> Testing more shit. <br/> <a href=""></a>'
+};
+ 
+mailgun.messages().send(data, function (error, body) {
+  console.log(body);
+});
     });
 });
 
