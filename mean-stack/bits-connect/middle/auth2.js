@@ -9,6 +9,7 @@ var isAuthenticated = function (req, res, next) {
     } else {
         var encoded = req.headers.authorization.split(' ')[1];
         var decoded = new Buffer(encoded, 'base64').toString('utf8');
+        console.log(encoded);
         var userid = decoded.split(':')[0];
         var appid = decoded.split(':')[1];
         checkForHexRegExp = /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i

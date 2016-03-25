@@ -25,7 +25,7 @@ router.post('/', auth2, function (req, res, next) {
 });
 
 /* GET /apps/id */
-router.get('/:id', auth2, function (req, res, next) {
+router.get('/:id', auth1, function (req, res, next) {
     appsSchema.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);

@@ -7,11 +7,15 @@ var auth2 = require('../middle/auth2');
 var mongoose = require('mongoose');
 var usersSchema = require('../models/usersSchema.js');
 
+var crypto = require('crypto');
+
 /* GET /users */
 router.get('/', auth1, function (req, res) {
-    
-    
-    usersSchema.find(function (err, users) {
+
+
+    usersSchema.find({}, {
+                "password": false
+            },function (err, users) {
         if (err) return next(err);
         res.json(users);
     });
@@ -20,8 +24,9 @@ router.get('/', auth1, function (req, res) {
 /* POST /users */
 router.post('/', auth2, function (req, res, next) {
     console.log(req.body)
-    
-    usersSchema.create(req.body, function (err, post) {
+    var userobj=req.body;
+    userobj.password=crypto.createHash('md5').update(req.body.password).digest("hex");
+    usersSchema.create(userobj, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -53,16 +58,20 @@ router.delete('/:id', auth2, function (req, res, next) {
 
 /* POST /users/search/authenticate/ */
 router.post('/search/authenticate', auth1, function (req, res, next) {
-    usersSchema.count(req.body, function (err, usercount) {
+    var userobj=req.body;
+    userobj.password=crypto.createHash('md5').update(userobj.password).digest("hex");
+    usersSchema.count(userobj, function (err, usercount) {
         if (err) res.send("fail");
         console.log(usercount);
-        if (usercount !=1) {
+        if (usercount != 1) {
             res.json({
-                    error: 'Invalid Authentication!'
-                })
+                error: 'Invalid Authentication!'
+            })
         }
-        if(usercount==1){
-            usersSchema.find(req.body, {"password":false}, function (err, user) {
+        if (usercount == 1) {
+            usersSchema.find(req.body, {
+                "password": false
+            }, function (err, user) {
                 res.json(user);
             });
         }
@@ -72,4 +81,3 @@ router.post('/search/authenticate', auth1, function (req, res, next) {
 
 
 module.exports = router;
-
