@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <title>BITS Connect</title>
+    <script src="../hosted/scripts/SmoothScroll.js"></script>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="../hosted/fonts/material-icons/font.css" />
+    <link rel="stylesheet" href="../hosted/fonts/Proxima%20Nova/font.css" />
+</head>
+
+<body>
+    <div id="header">
+        <div id="logo" class="wrapper">
+            <a href="https://bits.io" target="_self">
+                <i class="material-icons">timeline</i>
+                <!--<img src="connect.png">-->
+                <span>BIT</span><span>MAP</span>
+            </a>
+        </div>
+        <img id="bitsStruct" src="connect.png">
+    </div>
+    <div class="page" id="auth_page">
+        <div class="form_wrapper">
+            <div id="sign_in_form">
+                <div>
+                    <span class="title">Existing User</span>
+                    <input type="text" placeholder="UserID" />
+                    <input type="password" placeholder="Password" />
+                    <button onclick='login(this)'>Sign In
+                        <img src="tail-spin.svg" class="loader" />
+                    </button>
+                </div>
+            </div>
+            <div id="sign_up_form">
+                <div>
+                    <span class="title">Register Now</span>
+                    <input type="text" placeholder="Name" />
+                    <input type="text" placeholder="BITS ID" />
+                    <input type="password" placeholder="Password" />
+                    <input type="password" placeholder="Confirm Password" />
+                    <button>Sign Up
+                        <img src="tail-spin.svg" class="loader" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page" id="dashboard">
+        <div id="dashboard_header">
+            <li>MY DASHBOARD</li>
+            <li>ACCOUNT SETTINGS</li>
+        </div>
+        <div id="main_wrapper">
+            <div>
+                <li>
+                    <span>E-mail</span>
+                    <span>vermaabhilash70@gmail.com</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>BITS ID</span>
+                    <span>2015B4PS541H</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Username</span>
+                    <span>calvrix</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Course</span>
+                    <span>MSc. Mathematics</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Skills</span>
+                    <span>Web Development</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Date of Birth</span>
+                    <span>17/01/1998</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Applications</span>
+                    <span id="userWork">
+                        <span>Evernote<i class="more material-icons">arrow_drop_down</i></span>
+                    <span>PowerAmp<i class="more material-icons">arrow_drop_down</i></span>
+                    <span id="newAppButton" class="material-icons" title="Make a new app">add</span>
+                    </span>
+                </li>
+                <li>
+                    <span>Credits</span>
+                    <span id="userCredits">
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star_half</i>
+                        <i class="material-icons">star_border</i>
+                    </span>
+                </li>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</body>
+<script src="index.js"></script>
+
+</html>
