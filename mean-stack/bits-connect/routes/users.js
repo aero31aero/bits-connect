@@ -26,9 +26,11 @@ router.post('/', auth2, function (req, res, next) {
     console.log(req.body)
     var userobj=req.body;
     userobj.password=crypto.createHash('md5').update(req.body.password).digest("hex");
+    userobj.password=crypto.createHash('md5').update(req.body.password+userobj.password).digest("hex");
     usersSchema.create(userobj, function (err, post) {
         if (err) return next(err);
         res.json(post);
+        var confirmurl="172.16.121.10:3000/users/verification/"+post._id;
         var api_key = 'key-0518a24980eb8e0cdcd18549cf57620a';
         var domain = 'sandboxaa5129032958444486c928220840d7eb.mailgun.org';
         var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
@@ -36,7 +38,7 @@ router.post('/', auth2, function (req, res, next) {
         from: 'Nischay Pro <f2015606@hyderabad.bits-pilani.ac.in>',
         to:  userobj.bitsid + '@hyderabad.bits-pilani.ac.in',
         subject: 'Please activate your Bits Connect Account',
-        html: 'Thank you for using our services. To finish setting up your account you need to activate your account and confirm your email.<br/> Testing more shit. <br/> <a href=""></a>'
+        html: 'Thank you for using our services. To finish setting up your account you need to confirm your email.<br><a href="'+confirmurl+'">Click Here To Confirm Your Email.</a><br>Alternatively, open this link: '+confirmurl
 };
  
 mailgun.messages().send(data, function (error, body) {
@@ -72,7 +74,8 @@ router.delete('/:id', auth2, function (req, res, next) {
 /* POST /users/search/authenticate/ */
 router.post('/search/authenticate', auth1, function (req, res, next) {
     var userobj=req.body;
-    userobj.password=crypto.createHash('md5').update(userobj.password).digest("hex");
+    userobj.password=crypto.createHash('md5').update(req.body.password).digest("hex");
+    userobj.password=crypto.createHash('md5').update(req.body.password+userobj.password).digest("hex");
     usersSchema.count(userobj, function (err, usercount) {
         if (err) res.send("fail");
         console.log(usercount);
@@ -92,5 +95,11 @@ router.post('/search/authenticate', auth1, function (req, res, next) {
 
 });
 
-
+/* GET /users/verification/id */
+router.get('/verification/:id', function (req, res, next) {
+    usersSchema.findByIdAndUpdate(req.params.id, {"isverified":true}, function (err, post) {
+        if (err) return next(err);
+        res.render('index', { title: 'Bits Connect' });
+    });
+});
 module.exports = router;
