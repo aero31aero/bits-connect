@@ -26,7 +26,7 @@ var isAuthenticated = function (req, res, next) {
         }, function (err, result) {
             if (err) return next(err);
             if (result[0] != undefined) {
-                console.log(result[0].permission);
+                console.log("Permission: "+result[0].permission);
                 if (result[0].permission >= 1) {
                     return next();
                 } else {

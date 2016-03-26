@@ -87,7 +87,7 @@ router.put('/:id', auth2, function (req, res, next) {
 
 /* PUT /users/:id/appdata */
 router.put('/:id/appdata', auth1, function (req, res, next) {
-    if (req.body.hasOwnProperty('field') && req.body.hasOwnProperty('data')) {
+    if (req.body.hasOwnProperty('field') && req.body.hasOwnProperty('data') && req.body.field != "appid") {
         var encoded = req.headers.authorization.split(' ')[1];
         var decoded = new Buffer(encoded, 'base64').toString('utf8');
         console.log(encoded);
@@ -99,41 +99,48 @@ router.put('/:id/appdata', auth1, function (req, res, next) {
                 }
             }
         }
-        var appcounter;
+
         var userfilter = {
             "_id": ObjectID(req.params.id),
-            "appdata.appid": appid
+            "appdata": {
+                $elemMatch: {
+                    "appid": appid
+                }
+            }
         }
 
-        usersSchema.count(userfilter, function (err, count) {
-            if (err) return next(err);
-            if (count == 0) {
+        usersSchema.count(userfilter, function (err, appcount) {
+            console.log("Count: " + appcount);
+
+            if (appcount == 0) {
                 usersSchema.findByIdAndUpdate(req.params.id, appdataobj, function (err, post) {
+                    console.log("Update Code");
                     if (err) return next(err);
+                    var field = "appdata.$." + req.body.field;
+                    appdataobj = {};
+                    var set = {};
+                    set[field] = req.body.data;
+                    appdataobj["$set"] = set;
+                    usersSchema.update(userfilter, appdataobj, function (err, post) {
+                        if (err) return next(err);
+                        res.json(post);
+                    });
+                });
+            } else {
+                var field = "appdata.$." + req.body.field;
+                    appdataobj = {};
+                    var set = {};
+                    set[field] = req.body.data;
+                    appdataobj["$set"] = set;
+                usersSchema.update(userfilter, appdataobj, function (err, post) {
+                    if (err) return next(err);
+                    res.json(post);
                 });
             }
-        });
-
-
-        //    usersSchema.findById(req.params.id, function (err, post) {
-        //        if (err) return next(err);
-        //        for(var counter=0;counter<post.appdata.length;counter++){
-        //            if(post.appdata[counter].appid==appid){
-        //                appcounter=counter;
-        //            }
-        //        };
-        //    });
-        var field = "appdata.$." + req.body.field;
-        appdataobj = {};
-        var set = {};
-        set[field] = req.body.data;
-        appdataobj["$set"] = set;
-        usersSchema.update(userfilter, appdataobj, function (err, post) {
             if (err) return next(err);
-            res.json(post);
         });
-    }
-    else{
+
+    } else {
         res.json({
             error: 'Could not find field and data attrs.'
         })
