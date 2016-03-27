@@ -128,10 +128,10 @@ router.put('/:id/appdata', auth1, function (req, res, next) {
                 });
             } else {
                 var field = "appdata.$." + req.body.field;
-                    appdataobj = {};
-                    var set = {};
-                    set[field] = req.body.data;
-                    appdataobj["$set"] = set;
+                appdataobj = {};
+                var set = {};
+                set[field] = req.body.data;
+                appdataobj["$set"] = set;
                 usersSchema.update(userfilter, appdataobj, function (err, post) {
                     if (err) return next(err);
                     res.json(post);
@@ -145,6 +145,48 @@ router.put('/:id/appdata', auth1, function (req, res, next) {
             error: 'Could not find field and data attrs.'
         })
     }
+
+});
+
+/* GET /users/:id/appdata */
+router.get('/:id/appdata', auth1, function (req, res, next) {
+
+    var encoded = req.headers.authorization.split(' ')[1];
+    var decoded = new Buffer(encoded, 'base64').toString('utf8');
+    console.log(encoded);
+    var appid = decoded.split(':')[1];
+
+    var userfilter = {
+        "_id": ObjectID(req.params.id),
+        "appdata": {
+            $elemMatch: {
+                "appid": appid
+            }
+        }
+    }
+
+    usersSchema.count(userfilter, function (err, appcount) {
+        console.log("Count: " + appcount);
+
+        if (appcount != 0) {
+            usersSchema.findById(req.params.id, {
+                appdata: {
+                    $elemMatch: {
+                        appid: appid
+                    }
+                }
+            }, function (err, post) {
+                if (err) return next(err);
+                res.json(post.appdata[0])
+            });
+        } else {
+            //ERROR 404
+            res.json({
+                error: 'Could not find your appdata'
+            })
+        }
+        if (err) return next(err);
+    });
 
 });
 

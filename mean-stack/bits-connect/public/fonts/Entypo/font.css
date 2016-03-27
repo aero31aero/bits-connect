@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Entypo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Entypo'), url(entypo.woff) format('woff');
+}
+@font-face {
+  font-family: 'Entypo Social';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Entypo-Social'), url(entypo-social.woff) format('woff');
+}
