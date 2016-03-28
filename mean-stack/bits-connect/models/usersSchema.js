@@ -7,6 +7,7 @@ var schema = new mongoose.Schema({
     isprivate: Boolean,
     isverified: Boolean,
     note: String,
+    apps : { type : Array , "default" : [] },
     appdata : { type : Array , "default" : [] },
     updated_at: { type: Date, default: Date.now },
 });

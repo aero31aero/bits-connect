@@ -14,7 +14,8 @@ router.get('/', auth1, function (req, res) {
 
 
     usersSchema.find({}, {
-        "password": false
+        "password": false,
+        "appdata": false
     }, function (err, users) {
         if (err) return next(err);
         res.json(users);
@@ -44,7 +45,10 @@ router.post('/', auth2, function (req, res, next) {
             })
         }
         if (usercount == 0) {
-            usersSchema.create(userobj, function (err, post) {
+            usersSchema.create(userobj, {
+                "password": false,
+                "appdata": false
+            }, function (err, post) {
                 if (err) return next(err);
                 res.json(post);
                 var api_key = 'key-0518a24980eb8e0cdcd18549cf57620a';
@@ -71,7 +75,10 @@ router.post('/', auth2, function (req, res, next) {
 
 /* GET /users/id */
 router.get('/:id', auth1, function (req, res, next) {
-    usersSchema.findById(req.params.id, function (err, post) {
+    usersSchema.findById(req.params.id, {
+        "password": false,
+        "appdata": false
+    }, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -79,9 +86,14 @@ router.get('/:id', auth1, function (req, res, next) {
 
 /* PUT /users/:id */
 router.put('/:id', auth2, function (req, res, next) {
-    usersSchema.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    usersSchema.findByIdAndUpdate(req.params.id, req.body, {
+        "password": false,
+        "appdata": false
+    }, function (err, post) {
         if (err) return next(err);
-        res.json(post);
+        res.json({
+            error: 'Success!'
+        })
     });
 });
 
@@ -192,7 +204,10 @@ router.get('/:id/appdata', auth1, function (req, res, next) {
 
 /* DELETE /users/:id */
 router.delete('/:id', auth2, function (req, res, next) {
-    usersSchema.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+    usersSchema.findByIdAndRemove(req.params.id, {
+        "password": false,
+        "appdata": false
+    }, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -200,29 +215,67 @@ router.delete('/:id', auth2, function (req, res, next) {
 
 /* POST /users/search/authenticate/ */
 router.post('/search/authenticate', auth1, function (req, res, next) {
+
+
+    var encoded = req.headers.authorization.split(' ')[1];
+    var decoded = new Buffer(encoded, 'base64').toString('utf8');
+    var appid = decoded.split(':')[1];
+    var appdataobj = {
+        $addToSet: {
+            "apps": {
+                'appid': appid
+            }
+        }
+    }
+    var userfilter = {
+        "_id": ObjectID(req.params.id),
+        "apps": {
+            $elemMatch: {
+                "appid": appid
+            }
+        }
+    }
     var userobj = req.body;
+
+
+
     userobj.password = crypto.createHash('md5').update(req.body.password).digest("hex");
     userobj.password = crypto.createHash('md5').update(req.body.password + userobj.password).digest("hex");
     usersSchema.count(userobj, function (err, usercount) {
         if (err) res.send("fail");
-        console.log(usercount);
+        console.log("USER " + usercount);
         if (usercount != 1) {
             res.json({
-                error: 'Invalid Authentication!'
+                error: 'Invalid User Credentials!'
             })
         }
         if (usercount == 1) {
             usersSchema.find(req.body, {
-                "password": false
+                "password": false,
+                "appdata": false
             }, function (err, user) {
+                usersSchema.update(userobj, appdataobj, function (err, post) {
+                    console.log("Update Code");
+                    if (err) return next(err);
+                    //console.log(err);
+                    //res.json({"error":"success"});
+                });
                 res.json(user);
             });
         }
     });
+
+
+
+
+
+
+
+
 });
 
-/* GET /users/verification/id */
-router.get('/verification/:id', function (req, res, next) {
+/* GET /users/:id/verify */
+router.get('/:id/verify', function (req, res, next) {
     usersSchema.findByIdAndUpdate(req.params.id, {
         "isverified": true
     }, function (err, post) {

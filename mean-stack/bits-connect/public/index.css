@@ -2,22 +2,18 @@ body {
     margin: 0px;
     overflow-x: hidden;
 }
-
 * {
     font-family: 'Proxima Nova';
 }
-
 .fontAwesomed {
     font-family: "FontAwesome";
 }
-
 button {
     border: none;
     padding: 0px;
     background: transparent;
     outline: none;
 }
-
 body>div.page {
     width: 100vw;
     min-height: 100vh;
@@ -26,31 +22,26 @@ body>div.page {
     transition: all 0.5s cubic-bezier(0, 0, 0, 1);
     animation: fadeIn 0.5s cubic-bezier(0, 0, 0, 1);
 }
-
 @-webkit-keyframes fadeIn {
     0% {
         opacity: 0;
         transform: scale(1.1);
     }
 }
-
 @keyframes fadeIn {
     0% {
         opacity: 0;
         transform: scale(1.1);
     }
 }
-
 body>div.page.dying {
     transform: scale(0.9);
     opacity: 0.2;
 }
-
 #auth_page {
     background: #e0e0e0;
     position: relative;
 }
-
 #auth_page>.form_wrapper {
     width: 60%;
     height: 60%;
@@ -64,25 +55,23 @@ body>div.page.dying {
     background-blend-mode: multiply;
     background-size: cover;
 }
-
 #auth_page>.form_wrapper:after {
     position: absolute;
     content: "OR";
-    font-size: 13px;
+    font-size: 1.5vh;
     color: #ddd;
     background: #f5f5f5;
     border-radius: 50%;
     border: 1px solid #ddd;
-    width: 60px;
+    width: 5vh;
     text-align: center;
-    line-height: 60px;
-    height: 60px;
-    margin: -30px;
+    line-height: 5vh;
+    height: 5vh;
+    margin: -2.5vh;
     top: 50%;
     left: 50%;
     font-weight: 200;
 }
-
 #auth_page>.form_wrapper>div {
     width: 50%;
     background: #f5f5f5;
@@ -94,13 +83,11 @@ body>div.page.dying {
     box-sizing: border-box;
     color: rgb(40, 68, 86);
 }
-
 #sign_up_form {
     border-left: 1px solid rgba(220, 220, 230, 0.5);
     height: 100% !important;
     top: 0% !important;
 }
-
 #auth_page>.form_wrapper>div>div {
     position: absolute;
     top: 50%;
@@ -108,52 +95,46 @@ body>div.page.dying {
     width: 70%;
     left: 15%;
 }
-
 #auth_page>.form_wrapper>div>div>* {
     width: 100%;
     margin: 15px 0px;
     position: relative;
     display: block;
-    line-height: 36px;
-    height: 36px;
+    line-height: 5vh;
+    height: 5vh;
     text-align: center;
 }
-
 #auth_page>.form_wrapper>div>div>.title {
     font-size: 4vh;
 }
-
 #auth_page>.form_wrapper>div>div>input {
     border: 1px solid rgba(40, 68, 86, 0.2);
     outline: none;
     background: transparent;
+    font-size: 2vh;
+    color: rgba(40, 68, 86, 0.9);
 }
-
 #auth_page>.form_wrapper>div>div>input:focus {
     border-color: rgba(40, 68, 86, 0.8);
 }
-
 #auth_page>.form_wrapper>div>div>button {
     width: 50%;
     left: 25%;
-    line-height: 35px;
+    line-height: 5vh;
+    font-size: 2vh;
     border: 1px solid rgba(40, 68, 86, 1);
     color: inherit;
 }
-
 #auth_page>.form_wrapper>div>div>button:focus {
     border-style: dotted;
 }
-
 a {
     text-decoration: none;
     color: unset;
 }
-
 #auth_page>.form_wrapper>div>div>button:hover {
     background: rgba(0, 68, 86, 0.1);
 }
-
 #auth_page button>.loader {
     width: 100%;
     height: 80%;
@@ -165,7 +146,6 @@ a {
     top: 0;
     display: none;
 }
-
 #dashboard {
     display: none;
     box-sizing: border-box;
@@ -173,14 +153,12 @@ a {
     background: #e0e0e0;
     height: auto;
 }
-
 #dashboard>#main_wrapper {
     width: 60%;
     position: relative;
     left: 20%;
     margin: 10vh 0;
 }
-
 #dashboard>#main_wrapper>div {
     width: 100%;
     position: relative;
@@ -190,10 +168,9 @@ a {
     background: #fafafa;
     box-shadow: 0px 2px 3px -1px rgba(0, 0, 0, 0.2);
 }
-
 #dashboard>#main_wrapper>div>li {
     width: 100%;
-    display: inline-block;
+    display: inline-flex;
     position: relative;
     height: 8vh;
     list-style-type: none;
@@ -205,47 +182,47 @@ a {
     color: #191919;
     font-weight: 500;
 }
-
 #dashboard>#main_wrapper>div>li:hover {
     background: #f0f0f0;
 }
-
 #dashboard>#main_wrapper>div>li:first-child {
     margin: 0;
 }
-
 #dashboard>#main_wrapper>div>li>span {
     position: relative;
     float: left;
     display: inline-block;
 }
-
 #dashboard>#main_wrapper>div>li>span:first-child {
     color: #222;
     width: 40%;
 }
-
 #dashboard>#main_wrapper>div>li>span:nth-child(2) {
     color: #aaa;
     width: 60%;
     font-weight: 400;
 }
-
+#userWork {
+    max-height: 8vh;
+}
+#userWork>.list {
+    display: inline-flex;
+    float: left;
+    overflow: hidden;
+}
 #userWork>span {
     height: 100%;
     display: inline-block;
     position: relative;
     float: left;
-    padding: 0px 25px 0px 10px;
+    padding: 0px 2vw 0px 10px;
     background: rgba(0, 0, 0, 0.02);
     margin-right: 1px;
 }
-
 #userWork>span:hover {
     background: rgba(0, 0, 0, 0.06);
     color: rgb(40, 68, 86);
 }
-
 #userWork>span>i {
     font-size: 2vh;
     position: absolute;
@@ -254,37 +231,31 @@ a {
     top: 0;
     width: 20px;
 }
-
 #newAppbutton {
     width: 8vh;
     text-align: center;
-    font-size: 20px;
+    font-size: 3vh;
     padding: 0px !important;
     line-height: 8vh;
     cursor: pointer;
 }
-#userDevices .fontAwesomed
-{
+#userDevices .fontAwesomed {
     padding-right: 0.5vw;
 }
 #userDevices>span {
-    padding: 0px 10px;
+    padding: 0px 3vh;
     cursor: pointer;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
-
 #userDevices>span:first-child {
     padding-left: 0px;
 }
-
 #userDevices>span:last-child {
     border: none;
 }
-
 #userDevices>span:hover {
     color: rgb(40, 68, 86);
 }
-
 #dashboard>#main_wrapper>div>li .editButton {
     font-size: 2.25vh;
     color: #ccc;
@@ -298,61 +269,17 @@ a {
     z-index: +10;
     cursor: pointer;
 }
-
 #dashboard>#main_wrapper li:hover .editButton {
     opacity: 1;
 }
-
 span {
     cursor: default;
 }
-
 #userCredits>i {
     color: #FBC02D;
     line-height: 8vh;
     font-size: 2.5vh;
 }
-
-#dashboard>#dashboard_header {
-    margin: 0px;
-    width: 100%;
-    background: rgba(15, 30, 42, 1);
-    height: 7.5vh;
-    display: none;
-    overflow: hidden;
-}
-
-#dashboard>#dashboard_header>li {
-    padding: 0px 5px 0px 15px;
-    margin: 0px 11px;
-    background: rgb(20, 55, 71);
-    display: block;
-    height: 7.5vh;
-    line-height: 8vh;
-    float: left;
-    font-size: 15px;
-    color: rgb(220, 220, 220);
-    position: relative;
-}
-
-#dashboard>#dashboard_header>li:before {
-    position: absolute;
-    content: "";
-    border-top: 3.75vh solid rgb(20, 55, 71);
-    border-bottom: 3.75vh solid rgb(20, 55, 71);
-    border-left: 20px solid transparent;
-    right: 100%;
-}
-
-#dashboard>#dashboard_header>li:after {
-    position: absolute;
-    content: "";
-    border-top: 3.75vh solid transparent;
-    border-bottom: 3.75vh solid transparent;
-    border-left: 20px solid rgb(20, 55, 71);
-    left: 100%;
-}
-
 #header,
 #footer {
     width: 100%;
@@ -361,19 +288,16 @@ span {
     z-index: +100;
     height: 10vh;
 }
-
 #header {
     top: 0;
     left: 0;
     box-sizing: border-box;
     padding: 0px 20px;
 }
-
 #footer {
     bottom: 0;
     display: none;
 }
-
 #logo {
     height: 100%;
     line-height: 10vh;
@@ -382,29 +306,24 @@ span {
     font-size: 2.5vh;
     color: rgb(240, 240, 240);
 }
-
 #logo>a>span {
     font-weight: 300;
 }
-
 #logo>a>span:last-child {
     font-weight: 600;
 }
-
 #logo>a>img {
     height: 9vh;
     float: left;
     position: relative;
     display: inline-block;
 }
-
 #bitsStruct {
     height: 10vh;
     float: right;
     position: relative;
     display: inline-block;
 }
-
 #logo>a>i.material-icons {
     height: 10vh;
     line-height: 10vh;
@@ -416,9 +335,64 @@ span {
     position: relative;
     padding-right: 10px;
 }
-
 #logo>a {
     position: relative;
     float: left;
     display: inline-block;
+}
+.hidden {
+    display: none !important;
+}
+@media (max-device-width: 480px) {
+    #bitsStruct {
+        display: none;
+    }
+    #auth_page>.form_wrapper {
+        width: 100vw;
+        height: 95vh;
+        margin-top: 10vh;
+        top: 0;
+        left: 0;
+    }
+    #auth_page>.form_wrapper>div {
+        width: 100% !important;
+        height: 50% !important;
+        top: 0 !important;
+    }
+    #auth_page>.form_wrapper>div#sign_in_form>div>* {
+        margin: 2.5vh 0 !important;
+    }
+    #dashboard {
+        background: #fafafa;
+    }
+    #dashboard>#main_wrapper {
+        width: 100%;
+        left: 0;
+        top: 0;
+        margin-top: 10vh;
+        box-shadow: none;
+    }
+    #dashboard>#main_wrapper>div>li {
+        padding: 0px 5vw;
+        font-size: 2.2vh;
+    }
+    #header {
+        padding: 0px 5vw;
+    }
+    #logo>a>i.material-icons {
+        padding-right: 2.5vw;
+    }
+    #userDevices .fontAwesomed {
+        padding-right: 2vw;
+    }
+    #userDevices>span {
+        padding: 0 3vw;
+    }
+    #userWork>span {
+        padding-right: 4vw;
+        margin-right: 10px;
+    }
+    #userWork>span>i {
+        right: unset;
+    }
 }
