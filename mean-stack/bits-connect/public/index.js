@@ -58,7 +58,7 @@ function login(x) {
                         loader.style.display = 'none';
                     }, 1000);
             } else {
-                curuser = reply;
+                curuser = reply[0];
                 window.setTimeout(function ()
                     //shift the masses
                     {
@@ -105,6 +105,7 @@ function register(x) {
                         }, 1000);
                 } else {
                     curuser = reply;
+                    afterlogin();
                     window.setTimeout(function ()
                         //shift the masses
                         {
@@ -119,16 +120,23 @@ function register(x) {
 }
 
 function afterlogin() {
-    document.getElementById('emailp').innerHTML = curuser[0].bitsid + '@hyderabad.bits-pilani.ac.in';
-    document.getElementById('userp').innerHTML = curuser[0].username;
+    document.getElementById('emailp').innerHTML = curuser.bitsid + '@hyderabad.bits-pilani.ac.in';
+    document.getElementById('userp').innerHTML = curuser.username;
+    if (curuser.isverified) {
+        document.getElementById('emailp').classList.add("success");
+        document.getElementById('emailp').innerHTML += ' (Verified)';
+        document.getElementById('emailconfig').classList.add("hidden");
+    } else {
+        document.getElementById('emailp').innerHTML += ' (Not Verified)'
+        document.getElementById('emailp').classList.add("failure");
+    }
     loadconnectedapps();
 
 }
 
-
 function loadconnectedapps() {
     var request = getRequest();
-    request.open("GET", "/users/" + curuser[0]._id);
+    request.open("GET", "/users/" + curuser._id);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.setRequestHeader("Connection", "close");
     request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
@@ -160,7 +168,6 @@ function queryappname(appid) {
         }
     }
 }
-
 
 function validatereg(username, bitsid, password, password2) {
     var nameRegex = /^[a-zA-Z\-\d]+$/;
@@ -208,4 +215,95 @@ function validatereg(username, bitsid, password, password2) {
         return "fail";
     }
     return "success";
+}
+
+var confirmuser = function () {
+    swal({
+            title: "Account Confirmation",
+            type: "input",
+            inputType: "text",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            animation: "slide-from-bottom",
+            "confirmButtonColor": "#0097a7",
+            inputPlaceholder: "Enter confirmation code here..."
+        },
+        function (inputValue) {
+            if (inputValue === false) return false;
+
+            if (inputValue === "") {
+                swal.showInputError("Code cannot be blank.");
+                return false
+            }
+            if (inputValue != curuser._id) {
+                toastr.error("Something Went Wrong.", "Failure");
+                return false
+            }
+            var request = getRequest();
+            request.open("GET", "/users/" + inputValue + "/verify");
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.setRequestHeader("Connection", "close");
+            request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
+            request.send({});
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200) {
+                    var reply = JSON.parse(request.responseText);
+                    if (reply.success) {
+                        document.getElementById('emailp').classList.add("success");
+                        document.getElementById('emailp').classList.remove("failure");
+                        toastr.success("Account Confirmed.", "Success");
+                        //swal("Success!", "Account Confirmed!", "success")
+                        document.getElementById('emailconfig').classList.add("hidden");
+                    } else {
+                        toastr.error("Something Went Wrong.", "Failure");
+                        //swal("Failure!", "Something Went Wrong!", "error")
+                    }
+                    document.getElementById('emailp').innerHTML = curuser.bitsid + '@hyderabad.bits-pilani.ac.in (Verified)';
+                    document.getElementById("userWork").innerHTML += '<span>' + 'Smart Auth' + '<i class="more material-icons">arrow_drop_down</i></span>';
+
+                }
+            }
+
+        });
+}
+
+var changepassword = function() {
+    swal({
+            title: "Account Password Updatation",
+            type: "input",
+            inputType: "password",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            animation: "slide-from-bottom",
+            "confirmButtonColor": "#0097a7",
+            inputPlaceholder: "Enter your new password here."
+        },
+        function (inputValue) {
+            if (inputValue === false) return false;
+
+            if (inputValue === "") {
+                swal.showInputError("Code cannot be blank.");
+                return false
+            }
+            var request = getRequest();
+            request.open("PUT", "/users/" + curuser._id);
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.setRequestHeader("Connection", "close");
+            request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
+            request.send('{"password":"' + inputValue + '"}');
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200) {
+                    var reply = JSON.parse(request.responseText);
+                    if (reply.success) {
+                        toastr.success("Account Password Updated Successfully.", "Success");
+                        //swal("Success!", "Account Confirmed!", "success"
+                    } else {
+                        toastr.error("Something Went Wrong.", "Failure");
+                        //swal("Failure!", "Something Went Wrong!", "error")
+                    }
+
+                }
+            }
+
+        });
 }

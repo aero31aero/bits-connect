@@ -343,6 +343,12 @@ span {
 .hidden {
     display: none !important;
 }
+.success{
+    color: #00aa00 !important;
+}
+.failure{
+    color: #aa0000 !important;
+}
 @media (max-device-width: 480px) {
     #bitsStruct {
         display: none;

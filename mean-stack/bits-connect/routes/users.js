@@ -45,28 +45,33 @@ router.post('/', auth2, function (req, res, next) {
             })
         }
         if (usercount == 0) {
-            usersSchema.create(userobj, {
-                "password": false,
-                "appdata": false
-            }, function (err, post) {
-                if (err) return next(err);
-                res.json(post);
-                var api_key = 'key-0518a24980eb8e0cdcd18549cf57620a';
-                var domain = 'sandboxaa5129032958444486c928220840d7eb.mailgun.org';
-                var mailgun = require('mailgun-js')({
-                    apiKey: api_key,
-                    domain: domain
-                });
-                var data = {
-                    from: 'Nischay Pro <f2015606@hyderabad.bits-pilani.ac.in>',
-                    to: userobj.bitsid + '@hyderabad.bits-pilani.ac.in',
-                    subject: 'Please Confirm Your Bits Connect Account',
-                    html: '<p>Dear ' + post.username + ', thank you for using our services. To finish setting up your account you need to confirm your identity.</p><p>Paste this key code in your dashboard after login:</p><h2> ' + post._id + '</h2>'
+            usersSchema.create(userobj,
+                function (err, post) {
+                    if (err) return next(err);
+                    usersSchema.findById(post.id, {
+                        "password": false,
+                        "appdata": false
+                    }, function (err, post) {
+                        if (err) return next(err);
+                        res.json(post);
+                    });
+                    var api_key = 'key-0518a24980eb8e0cdcd18549cf57620a';
+                    var domain = 'sandboxaa5129032958444486c928220840d7eb.mailgun.org';
+                    var mailgun = require('mailgun-js')({
+                        apiKey: api_key,
+                        domain: domain
+                    });
+                    var data = {
+                        from: 'Nischay Pro <f2015606@hyderabad.bits-pilani.ac.in>',
+                        to: userobj.bitsid + '@hyderabad.bits-pilani.ac.in',
+                        subject: 'Please Confirm Your Bits Connect Account',
+                        html: '<p>Dear ' + post.username + ', thank you for using our services. To finish setting up your account you need to confirm your identity.</p><p>Paste this key code in your dashboard after login:</p><h2> ' + post._id + '</h2>'
+                    }
+                    mailgun.messages().send(data, function (error, body) {
+                        console.log(body);
+                    });
                 }
-                mailgun.messages().send(data, function (error, body) {
-                    console.log(body);
-                });
-            });
+            );
         }
     });
 
@@ -86,13 +91,18 @@ router.get('/:id', auth1, function (req, res, next) {
 
 /* PUT /users/:id */
 router.put('/:id', auth2, function (req, res, next) {
+    var userobj = req.body;
+    if (userobj.password) {
+        userobj.password = crypto.createHash('md5').update(req.body.password).digest("hex");
+        userobj.password = crypto.createHash('md5').update(req.body.password + userobj.password).digest("hex");
+    }
     usersSchema.findByIdAndUpdate(req.params.id, req.body, {
         "password": false,
         "appdata": false
     }, function (err, post) {
         if (err) return next(err);
         res.json({
-            error: 'Success!'
+            success: 'Success!'
         })
     });
 });
@@ -280,8 +290,8 @@ router.get('/:id/verify', function (req, res, next) {
         "isverified": true
     }, function (err, post) {
         if (err) return next(err);
-        res.render('index', {
-            title: 'Bits Connect'
+        res.json({
+            "success": "success"
         });
     });
 });
