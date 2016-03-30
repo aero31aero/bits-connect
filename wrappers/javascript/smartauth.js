@@ -20,7 +20,7 @@ var SmartAuth = {
     initialize: function (ip, creda, credb, callback) {
         var me = this;
         var ipRegex = /^[0-9]+(?:\.[0-9]+){3}:[0-9]+$/;
-        ip = validfirstUsername = ip.match(ipRegex);
+        ip = ip.match(ipRegex);
         var response;
         var isserveronline = false;
         if (ip == null) {
@@ -33,10 +33,7 @@ var SmartAuth = {
             callback(response);
 
         }
-
         var request = this.getRequest();
-
-
         request.open("GET", "http://" + ip + "/apps/check");
         request = this.prepareRequest(request);
         request.setRequestHeader("Authorization", "Basic " + btoa(creda + ":" + credb));
@@ -84,17 +81,20 @@ var SmartAuth = {
         var username = prompt("Username");
         var password = prompt("Password");
         var response;
+        var me = this;
         var user = {
             "username": username,
             "password": password
         }
-
-        var request = this.getRequest();
-        request.open("POST", "http://" + this.creds.ip + "/users/search/authenticate");
-        request = this.prepareRequest(request);
+        var isserveronline = false;
+        var serverip = this.creds.ip;
+        var request = me.getRequest();
+        request.open("POST", "http://" + me.creds.ip + "/users/search/authenticate");
+        request = me.prepareRequest(request);
         request.send(JSON.stringify(user));
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
+                isserveronline = true;
                 var reply = JSON.parse(request.responseText);
                 if (reply.error) {
                     response = {
@@ -111,7 +111,18 @@ var SmartAuth = {
                 }
             }
         }
-
+        setTimeout(function () {
+            if (!isserveronline) {
+                request.abort()
+                response = {
+                    "error": {
+                        "message": "Could not connect to server. Call init() with correct IP:PORT",
+                        "code": 2
+                    }
+                }
+                callback(response);
+            }
+        }, 4000);
     },
     store: function (user, field, data, callback) {
         var request = this.getRequest();
@@ -120,11 +131,13 @@ var SmartAuth = {
             "field": field,
             "data": data
         }
+        var isserveronline = false;
         request.open("PUT", "http://" + this.creds.ip + "/users/" + user.userid + "/appdata");
         request = this.prepareRequest(request);
         request.send(JSON.stringify(reqdata));
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
+                isserveronline = true;
                 var reply = JSON.parse(request.responseText);
                 if (reply.error) {
                     response = {
@@ -145,15 +158,29 @@ var SmartAuth = {
                 }
             }
         }
+        setTimeout(function () {
+            if (!isserveronline) {
+                request.abort()
+                response = {
+                    "error": {
+                        "message": "Could not connect to server. Call init() with correct IP:PORT",
+                        "code": 2
+                    }
+                }
+                callback(response);
+            }
+        }, 4000);
     },
     fetch: function (user, callback) {
         var request = this.getRequest();
         var response;
+        var isserveronline = false;
         request.open("GET", "http://" + this.creds.ip + "/users/" + user.userid + "/appdata");
         request = this.prepareRequest(request);
         request.send(null);
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
+                isserveronline = true;
                 var reply = JSON.parse(request.responseText);
                 if (reply.error) {
                     response = {
@@ -169,6 +196,17 @@ var SmartAuth = {
                 }
             }
         }
-
-    }
+        setTimeout(function () {
+            if (!isserveronline) {
+                request.abort()
+                response = {
+                    "error": {
+                        "message": "Could not connect to server. Call init() with correct IP:PORT",
+                        "code": 2
+                    }
+                }
+                callback(response);
+            }
+        }, 4000);
+    },
 }

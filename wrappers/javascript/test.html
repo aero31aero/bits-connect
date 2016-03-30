@@ -7,26 +7,32 @@
 
 <body>
     <script>
-        var curuser=null;
+        var curuser = null;
+
         function initialize() {
             SmartAuth.initialize("172.16.120.101:3000", "56f807294ddaf90940bb783f", "56f80b994ddaf90940bb7840", userlogin);
         }
+
         function userlogin(check) {
             if (check.error) {
                 alert(check.error.message);
             }
             if (check.success) {
+
                 SmartAuth.login(putdata);
             }
         }
+
         function putdata(user) {
             if (user.error) {
                 alert(user.error.message);
             } else {
-                curuser=user;
+
+                curuser = user;
                 SmartAuth.store(curuser, "sampledata", "thedataisthis", getdata)
             }
         }
+
         function getdata(check) {
             if (check.error) {
                 alert(check.error.message);
@@ -42,7 +48,6 @@
             }
         }
         initialize();
-
     </script>
 </body>
 
