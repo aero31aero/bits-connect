@@ -1,104 +1,109 @@
 <html>
 
-    <head>
-        <title>BITS Connect</title>
+<head>
+    <title>BITS Connect</title>
 
-        <script src="../hosted/scripts/SmoothScroll.js"></script>
-        <link rel="stylesheet" href="index.css" />
-        <link rel="stylesheet" href="/fonts/material-icons/font.css" />
-        <link rel="stylesheet" href="/fonts/Proxima%20Nova/font.css" />
-        <link rel="stylesheet" href="/fonts/Font%20Awesome/font.css" />
-    </head>
+    <script src="../hosted/scripts/SmoothScroll.js"></script>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="/fonts/material-icons/font.css" />
+    <link rel="stylesheet" href="/fonts/Proxima%20Nova/font.css" />
+    <link rel="stylesheet" href="/fonts/Font%20Awesome/font.css" />
+</head>
 
-    <body>
-        <div id="header">
-            <div id="logo" class="wrapper">
+<body>
+    <div id="header">
+        <div id="logo" class="wrapper">
 
-                <i class="material-icons">timeline</i>
-                <!--<img src="connect.png">-->
-                <span>SMART</span><span>AUTH</span>
+            <i class="material-icons">timeline</i>
+            <!--<img src="connect.png">-->
+            <span>SMART</span><span>AUTH</span>
 
-            </div>
-            <img id="bitsStruct" src="connect.png">
         </div>
-        <div class="page" id="auth_page">
-            <div class="form_wrapper">
-                <div id="sign_in_form">
-                    <div>
-                        <span class="title">Existing User</span>
-                        <input type="text" id="username" placeholder="Username" />
-                        <input type="password" id="password" placeholder="Password" />
-                        <button onclick='login(this)'>Sign In
-                            <img src="tail-spin.svg" class="loader" />
-                        </button>
-                    </div>
-                </div>
-                <div id="sign_up_form">
-                    <div>
-                        <span class="title">Register Now</span>
-                        <input type="text" id="username1" placeholder="Name" />
-                        <input type="text" id="bitsid1" placeholder="BITS ID" />
-                        <input type="password" id="password1" placeholder="Password" />
-                        <input type="password" id="password2" placeholder="Confirm Password" />
-                        <button onclick='register(this)'>Sign Up
-                            <img src="tail-spin.svg" class="loader" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="page" id="dashboard">
-            <div id="dashboard_header" class="hidden">
-                <li>MY DASHBOARD</li>
-                <li>ACCOUNT SETTINGS</li>
-            </div>
-            <div id="main_wrapper">
+        <img id="bitsStruct" src="connect.png">
+    </div>
+    <div class="page" id="auth_page">
+        <div class="form_wrapper">
+            <div id="sign_in_form">
                 <div>
-                    <li>
-                        <span>Username</span>
-                        <span id='userp'></span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li>
-                        <span>E-mail</span>
-                        <span id="emailp"></span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li id='emailconfig'>
-                        <span>Email Confirmation</span>
-                        <span onclick="confirmuser()">Click Here to Confirm</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li id='passwordconfig'>
-                        <span>Change Password</span>
-                        <span onclick="changepassword()">Click Here to Change Password</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li class="hidden">
-                        <span>Course</span>
-                        <span>MSc. Mathematics</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li class="hidden">
-                        <span>Skills</span>
-                        <span>Web Development</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li class="hidden">
-                        <span>Date of Birth</span>
-                        <span>17/01/1998</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li class="hidden">
-                        <span>Devices</span>
-                        <span id="userDevices">
+                    <span class="title">Existing User</span>
+                    <input type="text" id="username" placeholder="Username" />
+                    <input type="password" id="password" placeholder="Password" />
+                    <button onclick='login(this)'>Sign In
+                        <img src="tail-spin.svg" class="loader" />
+                    </button>
+                </div>
+            </div>
+            <div id="sign_up_form">
+                <div>
+                    <span class="title">Register Now</span>
+                    <input type="text" id="username1" placeholder="Name" />
+                    <input type="text" id="bitsid1" placeholder="BITS ID" />
+                    <input type="password" id="password1" placeholder="Password" />
+                    <input type="password" id="password2" placeholder="Confirm Password" />
+                    <button onclick='register(this)'>Sign Up
+                        <img src="tail-spin.svg" class="loader" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page" id="dashboard" name="general">
+        <div id="dashboard_header" class="hidden">
+            <li>MY DASHBOARD</li>
+            <li>ACCOUNT SETTINGS</li>
+        </div>
+        <div id="main_wrapper">
+            <div>
+                <li>
+                    <span>Username</span>
+                    <span id='userp'></span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>E-mail</span>
+                    <span id="emailp"></span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li id='emailconfig'>
+                    <span>Email Confirmation</span>
+                    <span onclick="confirmuser()">Click Here to Confirm</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li id='passwordconfig'>
+                    <span>Change Password</span>
+                    <span onclick="changepassword()">Click Here to Change Password</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Change Password</span>
+                    <span onclick="switchtoapp()">Create App</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li class="hidden">
+                    <span>Course</span>
+                    <span>MSc. Mathematics</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li class="hidden">
+                    <span>Skills</span>
+                    <span>Web Development</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li class="hidden">
+                    <span>Date of Birth</span>
+                    <span>17/01/1998</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li class="hidden">
+                    <span>Devices</span>
+                    <span id="userDevices">
                             <!--<span><font class="fontAwesomed">&#xf179;</font>172.16.123.216</span>-->
-                        <span><font class="fontAwesomed">&#xf17a;</font>Sal</span>
-                        <span><font class="fontAwesomed">&#xf17b;</font>XT1033</span>
-                        </span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <!--                <li class="hidden">
+                    <span><font class="fontAwesomed">&#xf17a;</font>Sal</span>
+                    <span><font class="fontAwesomed">&#xf17b;</font>XT1033</span>
+                    </span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <!--                <li class="hidden">
                         <span>Applications</span>
                         <span id="userWork">
                         <span>Evernote<i class="more material-icons">arrow_drop_down</i></span>
@@ -106,77 +111,82 @@
                         <span id="newAppButton" class="material-icons" title="Make a new app">add</span>
                         </span>
                     </li>-->
-                    <li>
-                        <span>Connected Applications</span>
-                        <span id="userWork">
+                <li>
+                    <span>Connected Applications</span>
+                    <span id="userWork">
                         </span>
-                    </li>
-                    <li class="hidden">
-                        <span class="hidden">Credits</span>
-                        <span class="hidden" id="userCredits">
+                </li>
+                <li class="hidden">
+                    <span class="hidden">Credits</span>
+                    <span class="hidden" id="userCredits">
                             <i class="material-icons">star</i>
                             <i class="material-icons">star</i>
                             <i class="material-icons">star</i>
                             <i class="material-icons">star_half</i>
                             <i class="material-icons">star_border</i>
                         </span>
-                    </li>
-                </div>
+                </li>
             </div>
         </div>
-        <div class="page" id="dashboard" class="hidden">
-            <div id="dashboard_header" class="hidden">
-                <li>MY DASHBOARD</li>
-                <li>ACCOUNT SETTINGS</li>
-            </div>
-            <div id="main_wrapper">
-                <div>
-                    <li>
-                        <span>User Token</span>
-                        <span id='userid'></span>
-                        <span>API Version</span>
-                        <span id='apiversion'>v1.0</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li>
-                        <span>Access Level</span>
-                        <span id="accesslevel"></span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li>
-                        <span>Application Name</span>
-                        <input type="text" id="appname" placeholder="Application Name" />
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li>
-                        <span>Application Description</span>
-                        <textarea id="appdescr"></textarea>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li class="hidden">
-                        <span onclick="createapp()">Create Application</span>
-                        <i class="material-icons editButton">mode_edit</i>
-                    </li>
-                    <li class="hidden">
-                        <span class="hidden">Credits</span>
-                        <span class="hidden" id="userCredits">
+    </div>
+    <div class="page" id="dashboard" class="hidden" name="addapp">
+        <div id="dashboard_header" class="hidden">
+            <li>MY DASHBOARD</li>
+            <li>ACCOUNT SETTINGS</li>
+        </div>
+        <div id="main_wrapper">
+            <div>
+                <li>
+                    <span>User Token</span>
+                    <span id='userid'></span>
+                    <span>API Version</span>
+                    <span id='apiversion'>v1.0</span>
+                </li>
+                <li>
+                    <span>Access Level</span>
+                    <span id="accesslevel">1</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Application Name</span>
+                    <input type="text" id="appname" placeholder="Application Name" />
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Application Description</span>
+                    <textarea id="appdescr"></textarea>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Create Application</span>
+                    <span onclick="createapp()">Create Application</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li>
+                    <span>Back to Dashboard</span>
+                    <span onclick="switchtodash()">Back to Dashboard</span>
+                    <i class="material-icons editButton">mode_edit</i>
+                </li>
+                <li class="hidden">
+                    <span class="hidden">Credits</span>
+                    <span class="hidden" id="userCredits">
                             <i class="material-icons">star</i>
                             <i class="material-icons">star</i>
                             <i class="material-icons">star</i>
                             <i class="material-icons">star_half</i>
                             <i class="material-icons">star_border</i>
                         </span>
-                    </li>
-                </div>
+                </li>
             </div>
         </div>
-        <div id="footer"></div>
-    </body>
-    <script type="text/javascript" src="libraries/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="libraries/toastr.min.css">
-    <script type="text/javascript" src="libraries/toastr.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="libraries/sweetalert.css">
-    <script type="text/javascript" src="libraries/sweetalert.min.js"></script>
-    <script src="index.js"></script>
+    </div>
+    <div id="footer"></div>
+</body>
+<script type="text/javascript" src="libraries/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="libraries/toastr.min.css">
+<script type="text/javascript" src="libraries/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css" href="libraries/sweetalert.css">
+<script type="text/javascript" src="libraries/sweetalert.min.js"></script>
+<script src="index.js"></script>
 
 </html>

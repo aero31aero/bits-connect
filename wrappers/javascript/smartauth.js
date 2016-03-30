@@ -12,7 +12,7 @@ var SmartAuth = {
     prepareRequest: function (request) {
         request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         request.setRequestHeader("Connection", "close");
-        if (this.creds.ip!=null) {
+        if (this.creds.ip != null) {
             request.setRequestHeader("Authorization", "Basic " + btoa(this.creds.userid + ":" + this.creds.appid));
         }
         return request;
@@ -106,21 +106,21 @@ var SmartAuth = {
                     callback(response);
                 } else {
                     response = JSON.parse(request.responseText)[0];
-                    response.userid=response._id;
+                    response.userid = response._id;
                     callback(response);
                 }
             }
         }
 
     },
-    store: function (user,field,data,callback) {
+    store: function (user, field, data, callback) {
         var request = this.getRequest();
         var response;
-        var reqdata={
-            "field":field,
+        var reqdata = {
+            "field": field,
             "data": data
         }
-        request.open("PUT", "http://" + this.creds.ip + "/users/"+user.userid+"/appdata");
+        request.open("PUT", "http://" + this.creds.ip + "/users/" + user.userid + "/appdata");
         request = this.prepareRequest(request);
         request.send(JSON.stringify(reqdata));
         request.onreadystatechange = function () {
@@ -146,10 +146,10 @@ var SmartAuth = {
             }
         }
     },
-    fetch: function (user,callback) {
+    fetch: function (user, callback) {
         var request = this.getRequest();
         var response;
-        request.open("GET", "http://" + this.creds.ip + "/users/"+user.userid+"/appdata");
+        request.open("GET", "http://" + this.creds.ip + "/users/" + user.userid + "/appdata");
         request = this.prepareRequest(request);
         request.send(null);
         request.onreadystatechange = function () {

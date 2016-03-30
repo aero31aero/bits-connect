@@ -28,7 +28,7 @@ router.get('/check', auth1, function (req, res) {
 /* POST /apps */
 router.post('/', auth2, function (req, res, next) {
     req.body.permission = '1';
-    if (req.body.userid != null && req.body.appname != null && req.body.description != null && req.body.userid.length > 0 && req.body.appname > 0 && req.body.description > 0) {
+    if (req.body.userid != null && req.body.appname != null && req.body.description != null && req.body.userid.length > 0 && req.body.appname.length > 0 && req.body.description.length > 0) {
         console.log(req.body)
         appsSchema.create(req.body, function (err, post) {
 

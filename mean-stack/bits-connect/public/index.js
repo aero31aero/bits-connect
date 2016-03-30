@@ -75,6 +75,26 @@ function login(x) {
 
 }
 
+function switchtoapp() {
+    var genapp = document.getElementsByName("general");
+    genapp[0].style.display = 'none';
+    genapp[0].classList.add('hidden');
+    var addapp = document.getElementsByName("addapp");
+    addapp[0].style.display = 'block';
+    addapp[0].classList.remove('hidden');
+}
+
+function switchtodash() {
+    var addapp = document.getElementsByName("addapp");
+    addapp[0].style.display = 'none';
+    addapp[0].classList.add('hidden');
+    var genapp = document.getElementsByName("general");
+    genapp[0].style.display = 'block';
+    genapp[0].classList.remove('hidden');
+
+}
+
+
 function register(x) {
     loader = x.getElementsByClassName('loader')[0];
     loader.style.display = 'block';
@@ -143,9 +163,9 @@ function createapp() {
     var appname = document.getElementById('appname').value;
     var appdesc = document.getElementById('appdescr').value;
     var user = {
+        "description": appdesc,
         "userid": usertoken,
-        "appname": appname,
-        "description": appdesc
+        "appname": appname
     }
     request.open("POST", "/apps");
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -154,7 +174,10 @@ function createapp() {
     request.send(JSON.stringify(user));
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
-
+            var reply = JSON.parse(request.responseText);
+            if (reply.success) {
+                swal("Success!", "App Created! Your Token is : " + reply.secrettoken, "success");
+            }
 
         }
     }
