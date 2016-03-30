@@ -9,6 +9,23 @@ var SmartAuth = {
         var request = new XMLHttpRequest();
         return request;
     },
+    showlogin: function (callback) {
+        var windowObjectReference;
+        var strWindowFeatures = "menubar=no,toolbar=no,personalbar=no,width=500,height=300,location=yes,resizable=no,scrollbars=no,status=yes";
+
+        function dialog() {
+            windowObjectReference = window.open("auth.html", "SMARTAUTH", strWindowFeatures);
+        }
+
+        function login() {
+            document.getElementById('loader').style.display = 'block';
+            var user = {};
+            user.username = document.getElementById('username').value;
+            user.password = document.getElementById('password').value;
+            window.close();
+            return user;
+        }
+    },
     prepareRequest: function (request) {
         request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         request.setRequestHeader("Connection", "close");
@@ -78,51 +95,62 @@ var SmartAuth = {
         }, 4000);
     },
     login: function (callback) {
-        var username = prompt("Username");
-        var password = prompt("Password");
-        var response;
+        var windowObjectReference;
+        var strWindowFeatures = "menubar=no,toolbar=no,personalbar=no,width=500,height=300,location=yes,resizable=no,scrollbars=no,status=yes";
+        windowObjectReference = window.open("auth.html", "SMARTAUTH", strWindowFeatures);
         var me = this;
-        var user = {
-            "username": username,
-            "password": password
-        }
-        var isserveronline = false;
-        var serverip = this.creds.ip;
-        var request = me.getRequest();
-        request.open("POST", "http://" + me.creds.ip + "/users/search/authenticate");
-        request = me.prepareRequest(request);
-        request.send(JSON.stringify(user));
-        request.onreadystatechange = function () {
-            if (request.readyState == 4 && request.status == 200) {
-                isserveronline = true;
-                var reply = JSON.parse(request.responseText);
-                if (reply.error) {
+        function login() {
+            document.getElementById('loader').style.display = 'block';
+            var user = {};
+            user.username = document.getElementById('username').value;
+            user.password = document.getElementById('password').value;
+            window.close();
+            var username = user.username;
+            var password = user.password;
+            var response;
+            console.log("Code Was Here")
+            var user = {
+                "username": username,
+                "password": password
+            }
+            var isserveronline = false;
+            var serverip = me.creds.ip;
+            var request = me.getRequest();
+            request.open("POST", "http://" + me.creds.ip + "/users/search/authenticate");
+            request = me.prepareRequest(request);
+            request.send(JSON.stringify(user));
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200) {
+                    isserveronline = true;
+                    var reply = JSON.parse(request.responseText);
+                    if (reply.error) {
+                        response = {
+                            "error": {
+                                "message": "User Auth Fail.",
+                                "code": 1
+                            }
+                        }
+                        callback(response);
+                    } else {
+                        response = JSON.parse(request.responseText)[0];
+                        response.userid = response._id;
+                        callback(response);
+                    }
+                }
+            }
+            setTimeout(function () {
+                if (!isserveronline) {
+                    request.abort()
                     response = {
                         "error": {
-                            "message": "User Auth Fail.",
-                            "code": 1
+                            "message": "Could not connect to server. Call init() with correct IP:PORT",
+                            "code": 2
                         }
                     }
                     callback(response);
-                } else {
-                    response = JSON.parse(request.responseText)[0];
-                    response.userid = response._id;
-                    callback(response);
                 }
-            }
+            }, 4000);
         }
-        setTimeout(function () {
-            if (!isserveronline) {
-                request.abort()
-                response = {
-                    "error": {
-                        "message": "Could not connect to server. Call init() with correct IP:PORT",
-                        "code": 2
-                    }
-                }
-                callback(response);
-            }
-        }, 4000);
     },
     store: function (user, field, data, callback) {
         var request = this.getRequest();

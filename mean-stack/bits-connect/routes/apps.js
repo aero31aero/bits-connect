@@ -28,6 +28,7 @@ router.get('/check', auth1, function (req, res) {
 /* POST /apps */
 router.post('/', auth2, function (req, res, next) {
     req.body.permission = '1';
+    req.body.isactive=true;
     if (req.body.userid != null && req.body.appname != null && req.body.description != null && req.body.userid.length > 0 && req.body.appname.length > 0 && req.body.description.length > 0) {
         console.log(req.body)
         appsSchema.create(req.body, function (err, post) {
@@ -48,6 +49,14 @@ router.post('/', auth2, function (req, res, next) {
 /* GET /apps/id */
 router.get('/:id', auth1, function (req, res, next) {
     appsSchema.findById(req.params.id, function (err, post) {
+        if (err) return next(err);
+        res.json(post);
+    });
+});
+
+/* GET /apps/dev/id */
+router.get('/dev/:id', auth2, function (req, res, next) {
+    appsSchema.find({"userid":req.params.id}, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });

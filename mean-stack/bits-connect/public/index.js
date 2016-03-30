@@ -75,6 +75,11 @@ function login(x) {
 
 }
 
+function reloaddata() {
+    loadmyapp();
+    loadconnectedapps();
+}
+
 function switchtoapp() {
     var genapp = document.getElementsByName("general");
     genapp[0].style.display = 'none';
@@ -85,6 +90,7 @@ function switchtoapp() {
 }
 
 function switchtodash() {
+    reloaddata();
     var addapp = document.getElementsByName("addapp");
     addapp[0].style.display = 'none';
     addapp[0].classList.add('hidden');
@@ -94,6 +100,25 @@ function switchtodash() {
 
 }
 
+function switchtoapp2() {
+    var genapp = document.getElementsByName("general");
+    genapp[0].style.display = 'none';
+    genapp[0].classList.add('hidden');
+    var addapp = document.getElementsByName("viewapp");
+    addapp[0].style.display = 'block';
+    addapp[0].classList.remove('hidden');
+}
+
+function switchtodash2() {
+    reloaddata();
+    var addapp = document.getElementsByName("viewapp");
+    addapp[0].style.display = 'none';
+    addapp[0].classList.add('hidden');
+    var genapp = document.getElementsByName("general");
+    genapp[0].style.display = 'block';
+    genapp[0].classList.remove('hidden');
+
+}
 
 function register(x) {
     loader = x.getElementsByClassName('loader')[0];
@@ -153,6 +178,7 @@ function afterlogin() {
         document.getElementById('emailp').innerHTML += ' (Not Verified)'
         document.getElementById('emailp').classList.add("failure");
     }
+    loadmyapp();
     loadconnectedapps();
 
 }
@@ -183,6 +209,45 @@ function createapp() {
     }
 }
 
+function deleteapp() {
+    swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover your deleted app!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        },
+        function () {
+
+            var request = getRequest();
+            var usertoken = curuser._id;
+            var appname = document.getElementById('appname').value;
+            var appdesc = document.getElementById('appdescr').value;
+            var user = {
+                "description": appdesc,
+                "userid": usertoken,
+                "appname": appname
+            }
+            request.open("DELETE", "/apps/" + curmyapp._id);
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.setRequestHeader("Connection", "close");
+            request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
+            request.send(JSON.stringify(user));
+            request.onreadystatechange = function () {
+                if (request.readyState == 4 && request.status == 200) {
+                    var reply = JSON.parse(request.responseText);
+                    if (reply.isactive == false) {
+                        swal("Success!", "Application has been deleted successfully.");
+                        switchtodash2();
+                    }
+
+                }
+            }
+        });
+}
+
 function loadconnectedapps() {
     var request = getRequest();
     request.open("GET", "/users/" + curuser._id);
@@ -192,6 +257,7 @@ function loadconnectedapps() {
     request.send({});
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
+            document.getElementsByName("myconappsh")[0].innerHTML = '';
             var reply = JSON.parse(request.responseText);
             var testdata = '';
             for (i = 0; i < reply.apps.length; i++) {
@@ -212,8 +278,54 @@ function queryappname(appid) {
     request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
             var reply = JSON.parse(request.responseText);
-            document.getElementById("userWork").innerHTML += '<span>' + reply.appname + '<i class="more material-icons">arrow_drop_down</i></span>';
+            document.getElementsByName("myconappsh")[0].innerHTML += '<span>' + reply.appname + '<i class="more material-icons">arrow_drop_down</i></span>';
 
+        }
+    }
+}
+
+
+function loadmyapp() {
+    var request = getRequest();
+    request.open("GET", "/apps/dev/" + curuser._id);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.setRequestHeader("Connection", "close");
+    request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
+    request.send({});
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            var reply = JSON.parse(request.responseText);
+            var testdata = '';
+            document.getElementsByName('myappsh')[0].innerHTML
+            for (i = 0; i < reply.length; i++) {
+                // console.log(reply.apps[i].appid);
+                if (reply[i].isactive) {
+                    testdata += '<span onclick="viewmyapp(\'' + reply[i]._id + '\')" id="' + reply[i]._id + '">' + reply[i].appname + '<i class="more material-icons">arrow_drop_down</i></span>';
+                }
+            }
+            document.getElementsByName('myappsh')[0].innerHTML = testdata;
+        }
+    }
+}
+
+var curmyapp = null;
+
+function viewmyapp(appid) {
+    switchtoapp2();
+    var request = getRequest();
+    request.open("GET", "/apps/" + appid);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.setRequestHeader("Connection", "close");
+    request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
+    request.send({});
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            var reply = JSON.parse(request.responseText);
+            curmyapp = reply;
+            document.getElementById('userid2').innerHTML = curuser._id;
+            document.getElementById('appid2').innerHTML = appid;
+            document.getElementById('nowmyappid').innerHTML = reply.appname;
+            document.getElementById('nowmyappdesc').innerHTML = reply.description;
         }
     }
 }
