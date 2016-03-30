@@ -383,11 +383,11 @@ span {
     color: rgb(240, 240, 240);
 }
 
-#logo>a>span {
+#logo>span {
     font-weight: 300;
 }
 
-#logo>a>span:last-child {
+#logo>span:last-child {
     font-weight: 600;
 }
 
