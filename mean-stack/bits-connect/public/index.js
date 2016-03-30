@@ -2,6 +2,8 @@ var dashboard = document.getElementById("dashboard");
 var auth_page = document.getElementById("auth_page");
 var loader = null;
 
+
+
 function getRequest() {
     var request = new XMLHttpRequest();
     return request;
@@ -122,6 +124,7 @@ function register(x) {
 function afterlogin() {
     document.getElementById('emailp').innerHTML = curuser.bitsid + '@hyderabad.bits-pilani.ac.in';
     document.getElementById('userp').innerHTML = curuser.username;
+    document.getElementById('userid').innerHTML = curuser._id;
     if (curuser.isverified) {
         document.getElementById('emailp').classList.add("success");
         document.getElementById('emailp').innerHTML += ' (Verified)';
@@ -132,6 +135,29 @@ function afterlogin() {
     }
     loadconnectedapps();
 
+}
+
+function createapp() {
+    var request = getRequest();
+    var usertoken = curuser._id;
+    var appname = document.getElementById('appname').value;
+    var appdesc = document.getElementById('appdescr').value;
+    var user = {
+        "userid": usertoken,
+        "appname": appname,
+        "description": appdesc
+    }
+    request.open("POST", "/apps");
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.setRequestHeader("Connection", "close");
+    request.setRequestHeader("Authorization", "Basic " + btoa("56d3e239ecec66ce7d6b4470:56f2f4d882c1145a4588bdbe"));
+    request.send(JSON.stringify(user));
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+
+
+        }
+    }
 }
 
 function loadconnectedapps() {
@@ -267,7 +293,7 @@ var confirmuser = function () {
         });
 }
 
-var changepassword = function() {
+var changepassword = function () {
     swal({
             title: "Account Password Updatation",
             type: "input",

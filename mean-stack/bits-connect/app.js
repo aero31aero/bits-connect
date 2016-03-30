@@ -1,4 +1,5 @@
 var express = require('express');
+var cors = require('cors')
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
@@ -12,7 +13,7 @@ var devices = require('./routes/devices');
 //var notifications = require('./routes/notifications');
 
 var app = express();
-
+app.use(cors());
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/bitsconnect', function(err) {

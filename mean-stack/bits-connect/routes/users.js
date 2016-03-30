@@ -109,7 +109,7 @@ router.put('/:id', auth2, function (req, res, next) {
 
 /* PUT /users/:id/appdata */
 router.put('/:id/appdata', auth1, function (req, res, next) {
-    if (req.body.hasOwnProperty('field') && req.body.hasOwnProperty('data') && req.body.field != "appid") {
+    if (req.body.hasOwnProperty('field') && req.body.hasOwnProperty('data') && req.body.field != "appid" && req.body.field != "error") {
         var encoded = req.headers.authorization.split(' ')[1];
         var decoded = new Buffer(encoded, 'base64').toString('utf8');
         console.log(encoded);

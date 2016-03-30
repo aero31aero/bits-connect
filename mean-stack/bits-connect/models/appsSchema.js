@@ -5,7 +5,7 @@ var schema = new mongoose.Schema({
     userid: String,
     description: String,
     isactive: Boolean,
-    permission: Number,
+    permission: { type: Number, default: 1},
     updated_at: { type: Date, default: Date.now },
 });
 

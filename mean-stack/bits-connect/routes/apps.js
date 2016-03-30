@@ -14,14 +14,35 @@ router.get('/', auth2, function (req, res) {
         res.json(apps);
     });
 });
+router.get('/online', function (req, res) {
+    res.json({
+        "status": "online"
+    })
+});
+router.get('/check', auth1, function (req, res) {
+    res.json({
+        "success": "credentials correct"
+    })
+});
 
 /* POST /apps */
 router.post('/', auth2, function (req, res, next) {
-    console.log(req.body)
-    appsSchema.create(req.body, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
-    });
+    req.body.permission = '1';
+    if (req.body.userid != null && req.body.appname != null && req.body.description != null && req.body.userid.length > 0 && req.body.appname > 0 && req.body.description > 0) {
+        console.log(req.body)
+        appsSchema.create(req.body, function (err, post) {
+
+            if (err) return next(err);
+            res.json({
+                success: "Success!",
+                secrettoken: post._id
+            });
+        });
+    } else {
+        res.json({
+            error: 'Data Invalid'
+        });
+    }
 });
 
 /* GET /apps/id */
@@ -42,7 +63,9 @@ router.put('/:id', auth2, function (req, res, next) {
 
 /* DELETE /apps/:id */
 router.delete('/:id', auth2, function (req, res, next) {
-    appsSchema.findByIdAndUpdate(req.params.id, {"isactive":false}, function (err, post) {
+    appsSchema.findByIdAndUpdate(req.params.id, {
+        "isactive": false
+    }, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });

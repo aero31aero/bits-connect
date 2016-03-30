@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>Test For Wrapper</title>
+</head>
+<script src="smartauth.js"></script>
+
+<body>
+    <script>
+        var curuser=null;
+        function initialize() {
+            SmartAuth.initialize("172.16.120.101:3000", "56f807294ddaf90940bb783f", "56f80b994ddaf90940bb7840", userlogin);
+        }
+
+        function userlogin(check) {
+            if (check.error) {
+                alert(check.error.message);
+            }
+            if (check.success) {
+                SmartAuth.login(putdata);
+            }
+        }
+
+        function putdata(user) {
+            if (user.error) {
+                alert(user.error.message);
+            } else {
+                curuser=user;
+                SmartAuth.store(curuser, "sampledata", "thedataisthis", getdata)
+            }
+        }
+
+        function getdata(check) {
+            if (check.error) {
+                alert(check.error.message);
+            }
+            if (check.success) {
+                SmartAuth.fetch(curuser, function(resdata) {
+                    if (resdata.error) {
+                        alert(resdata.error.message);
+                    } else {
+                        alert(resdata.sampledata);
+                    }
+                })
+            }
+        }
+        initialize();
+
+    </script>
+</body>
+
+</html>
